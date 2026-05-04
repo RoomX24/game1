@@ -31,7 +31,7 @@ html, body {
 #basket {
   position: absolute;
   bottom: 20px;
-  left: 50%;
+  left: 0px;
   transform: translateX(-50%);
   font-size: 50px;
 }
@@ -86,7 +86,6 @@ const badItems = ["💀","☠️","🧨"];
 
 function updateBasket() {
   basket.style.left = basketX + "px";
-  basket.style.transform = "translateX(-50%)";
 }
 
 // KEYBOARD
@@ -96,7 +95,6 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") basketX -= 40;
   if (e.key === "ArrowRight") basketX += 40;
 
-  const basketWidth = 80;
   basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
   updateBasket();
 });
@@ -116,7 +114,6 @@ document.addEventListener("touchmove", (e) => {
   basketX += (touchX - touchStartX) * 1.1; // 🔥 smoother
   touchStartX = touchX;
 
-  const basketWidth = 120;
   basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
 
   updateBasket();
