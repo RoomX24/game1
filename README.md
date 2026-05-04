@@ -1,2 +1,2 @@
 # game1
-busket
+game1.html
