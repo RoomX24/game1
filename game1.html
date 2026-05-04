@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 📱 ZOOM + MOBILE FIX -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Mr. X játék</title>
@@ -17,7 +16,7 @@ html, body {
   color: red;
   font-family: Arial;
   height: 100%;
-  touch-action: none; /* 🚫 no scroll / no drag */
+  touch-action: none;
 }
 
 #game {
@@ -31,9 +30,10 @@ html, body {
 #basket {
   position: absolute;
   bottom: 20px;
-  left: 0px;
-  transform: translateX(-50%);
+  left: 0;
   font-size: 50px;
+  width: 100px;
+  text-align: center;
 }
 
 .falling {
@@ -76,6 +76,8 @@ let timeLeft = 60;
 let basketX = window.innerWidth / 2;
 let gameRunning = true;
 
+const basketWidth = 100;
+
 const basket = document.getElementById("basket");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
@@ -99,7 +101,7 @@ document.addEventListener("keydown", (e) => {
   updateBasket();
 });
 
-// TOUCH (smooth)
+// TOUCH
 let touchStartX = 0;
 
 document.addEventListener("touchstart", (e) => {
@@ -111,7 +113,7 @@ document.addEventListener("touchmove", (e) => {
 
   let touchX = e.touches[0].clientX;
 
-  basketX += (touchX - touchStartX) * 1.1; // 🔥 smoother
+  basketX += (touchX - touchStartX) * 1.1;
   touchStartX = touchX;
 
   basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
@@ -136,7 +138,7 @@ function createFalling() {
     item.dataset.type = "bad";
   }
 
-  item.style.left = Math.random() * window.innerWidth + "px";
+  item.style.left = Math.random() * (window.innerWidth - 30) + "px";
   item.style.top = "0px";
 
   document.getElementById("game").appendChild(item);
@@ -153,7 +155,7 @@ function createFalling() {
 
     if (
       itemY > window.innerHeight - 100 &&
-      itemX > basketRect.left &&
+      itemX + 20 > basketRect.left &&
       itemX < basketRect.right
     ) {
       if (item.dataset.type === "good") {
