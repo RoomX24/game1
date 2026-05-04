@@ -38,7 +38,7 @@ html, body {
 
 .falling {
   position: absolute;
-  font-size: 30px;
+  font-size: 40px;
 }
 
 #score, #timer {
@@ -76,15 +76,15 @@ let timeLeft = 60;
 let basketX = window.innerWidth / 2;
 let gameRunning = true;
 
-const basketWidth = 100;
+const basketWidth = 150;
 
 const basket = document.getElementById("basket");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 const messageEl = document.getElementById("message");
 
-const goodItem = "🔴";
-const badItems = ["💀","☠️","🧨"];
+const goodItem = "🧩";
+const badItems = ["🩸","💀"];
 
 function updateBasket() {
   basket.style.left = basketX + "px";
