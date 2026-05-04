@@ -2,21 +2,30 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
+
+<!-- 📱 ZOOM + MOBILE FIX -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Mr. X játék</title>
 
 <style>
-body {
+html, body {
   margin: 0;
+  padding: 0;
   overflow: hidden;
   background: black;
   color: red;
   font-family: Arial;
+  height: 100%;
+  touch-action: none; /* 🚫 no scroll / no drag */
 }
 
 #game {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #basket {
@@ -80,7 +89,7 @@ function updateBasket() {
   basket.style.transform = "translateX(-50%)";
 }
 
-// BILLENTYŰ
+// KEYBOARD
 document.addEventListener("keydown", (e) => {
   if (!gameRunning) return;
 
@@ -88,11 +97,11 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") basketX += 40;
 
   const basketWidth = 80;
-basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
+  basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
   updateBasket();
 });
 
-// MOBIL HÚZÁS
+// TOUCH (smooth)
 let touchStartX = 0;
 
 document.addEventListener("touchstart", (e) => {
@@ -103,15 +112,17 @@ document.addEventListener("touchmove", (e) => {
   if (!gameRunning) return;
 
   let touchX = e.touches[0].clientX;
-  basketX += (touchX - touchStartX);
+
+  basketX += (touchX - touchStartX) * 1.1; // 🔥 smoother
   touchStartX = touchX;
 
-  const basketWidth = 150;
-basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
+  const basketWidth = 120;
+  basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
+
   updateBasket();
 });
 
-// TÁRGY GENERÁLÁS
+// FALLING OBJECTS
 function createFalling() {
   if (!gameRunning) return;
 
@@ -124,7 +135,7 @@ function createFalling() {
     item.innerText = goodItem;
     item.dataset.type = "good";
   } else {
-    item.innerText = badItems[Math.floor(Math.random()*badItems.length)];
+    item.innerText = badItems[Math.floor(Math.random() * badItems.length)];
     item.dataset.type = "bad";
   }
 
@@ -133,7 +144,7 @@ function createFalling() {
 
   document.getElementById("game").appendChild(item);
 
-  let speed = 5 + score / 40; // gyorsul ponttal
+  let speed = 5 + score / 40;
 
   let fall = setInterval(() => {
     let top = parseInt(item.style.top);
@@ -149,18 +160,16 @@ function createFalling() {
       itemX < basketRect.right
     ) {
       if (item.dataset.type === "good") {
-  score += 10;
-} else {
-  if (score > 0) {
-    score -= 10;
-  }
-}
+        score += 10;
+      } else {
+        if (score > 0) score -= 10;
+      }
 
-scoreEl.innerText = "Pont: " + score;
+      scoreEl.innerText = "Pont: " + score;
 
-if (score === 0 && timeLeft < 60 && timeLeft !== 60) restartGame();
-if (score >= 200) winGame();
-      
+      if (score === 0 && timeLeft < 60) restartGame();
+      if (score >= 200) winGame();
+
       item.remove();
       clearInterval(fall);
     }
@@ -173,7 +182,7 @@ if (score >= 200) winGame();
   }, 30);
 }
 
-// IDŐ
+// TIMER
 let timer = setInterval(() => {
   if (!gameRunning) return;
 
@@ -191,15 +200,16 @@ setInterval(createFalling, 400);
 function winGame() {
   gameRunning = false;
   messageEl.style.display = "block";
-  messageEl.innerHTML = "✔ Siker!<br>Kód: <b>5471</b><br><button onclick='location.reload()'>Újra</button>";
-
+  messageEl.innerHTML =
+    "✔ Siker!<br>Kód: <b>5471</b><br><button onclick='location.reload()'>Újra</button>";
 }
 
 // RESET
 function restartGame() {
   gameRunning = false;
   messageEl.style.display = "block";
-  messageEl.innerHTML = "💀 Újrakezdés<br><button onclick='location.reload()'>Újra</button>";
+  messageEl.innerHTML =
+    "💀 Újrakezdés<br><button onclick='location.reload()'>Újra</button>";
 }
 </script>
 
