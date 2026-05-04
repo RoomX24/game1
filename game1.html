@@ -106,7 +106,7 @@ document.addEventListener("touchmove", (e) => {
   basketX += (touchX - touchStartX);
   touchStartX = touchX;
 
-  const basketWidth = 80;
+  const basketWidth = 150;
 basketX = Math.max(0, Math.min(window.innerWidth - basketWidth, basketX));
   updateBasket();
 });
@@ -133,7 +133,7 @@ function createFalling() {
 
   document.getElementById("game").appendChild(item);
 
-  let speed = 3 + score / 50; // gyorsul ponttal
+  let speed = 5 + score / 40; // gyorsul ponttal
 
   let fall = setInterval(() => {
     let top = parseInt(item.style.top);
@@ -185,7 +185,7 @@ let timer = setInterval(() => {
 }, 1000);
 
 // SPAWN
-setInterval(createFalling, 800);
+setInterval(createFalling, 400);
 
 // WIN
 function winGame() {
